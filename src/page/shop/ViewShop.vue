@@ -1,10 +1,7 @@
 <template>
   <el-row>
     <el-row>
-      <el-breadcrumb separator="/">
-        <el-breadcrumb-item>商品管理</el-breadcrumb-item>
-        <el-breadcrumb-item>查看商品</el-breadcrumb-item>
-      </el-breadcrumb>
+      <BreadCrumbs :message="HierarchicalMenu"></BreadCrumbs>
     </el-row>
     <el-row>
       <el-col :span="6">
@@ -28,41 +25,34 @@
       <el-table-column label="操作">
         <el-row class="center">
           <el-button type="primary" @click="dialogFormVisible = true" icon="el-icon-edit" circle></el-button>
-          <el-button type="danger" icon="el-icon-delete" circle></el-button>
+          <el-button type="danger" @click="delet()" icon="el-icon-delete" circle></el-button>
         </el-row>
       </el-table-column>
     </el-table>
     <!-- 模态框 -->
     <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
-      <el-form :model="form">
-        <!-- <el-form-item label="活动名称" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="活动区域" :label-width="formLabelWidth">
-          <el-select v-model="form.region" placeholder="请选择活动区域">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
-          </el-select>
-        </el-form-item>-->
-        <ShelfShop></ShelfShop>
-      </el-form>
+      <Shelf ref="ShelfChild"></Shelf>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        <el-button type="primary" @click="submitForm()">确 定</el-button>
       </div>
     </el-dialog>
   </el-row>
 </template>
 
   <script>
-import ShelfShop from "./ShelfShop";
+import BreadCrumbs from "../../components/BreadCrumbs"; //面包屑
+import Shelf from "../../components/Shelf"; //组件
+
 export default {
-  name: "View",
+  name: "ViewShop",
   components: {
-    ShelfShop
+    BreadCrumbs,
+    Shelf
   },
   data() {
     return {
+      HierarchicalMenu: { first: "商品管理", second: "查看商品" }, //父组件的数据
       dialogFormVisible: false,
       formLabelWidth: "120px",
       //搜索数据
@@ -168,6 +158,35 @@ export default {
   methods: {
     search(searchValue) {
       console.log("您点击搜索了", searchValue);
+    },
+    //模态框确定按钮
+    submitForm() {
+      let flag = this.$refs["ShelfChild"].validateForm(); //调用子组件的验证表单方法
+      if (flag) {
+        this.dialogFormVisible = false;
+      } else {
+      }
+    },
+    //删除函数
+    delet() {
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          console.log("这是确认时调用的函数");
+          this.$message({
+            type: "success",
+            message: "删除成功!"
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
     }
   }
 };

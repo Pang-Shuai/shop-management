@@ -1,3 +1,117 @@
 <template>
-  <div>订单管理</div>
+  <el-row>
+    <el-row>
+      <el-button-group>
+        <el-button class="bt-bl" v-bind:class="{ active: isActive }" @click="SwitchBtn(1)">当日</el-button>
+        <el-button @click="SwitchBtn(2)">昨日</el-button>
+        <el-button @click="SwitchBtn(3)">当月</el-button>
+        <el-button class="bt-br" @click="SwitchBtn(4)">上月</el-button>
+      </el-button-group>
+    </el-row>
+    <el-row class="main">
+      <el-col :span="24" class="collectData">
+        <el-col :span="4">
+          <div class="title">订货单</div>
+          <div class="nums">
+            <font>1</font>
+            <span>笔</span>
+          </div>
+        </el-col>
+        <el-col :span="4" class="br">
+          <div class="title">订货单</div>
+          <div class="nums">
+            <font>0</font>
+            <span>笔</span>
+          </div>
+        </el-col>
+        <el-col :span="4">
+          <div class="title">订货金额</div>
+          <div class="nums">
+            <span>￥</span>
+            <font>100.0</font>
+          </div>
+        </el-col>
+        <el-col :span="4" class="br">
+          <div class="title">退货金额</div>
+          <div class="nums">
+            <span>￥</span>
+            <font>0</font>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="title">金额合计</div>
+          <div class="nums">
+            <span>￥</span>
+            <font>100.0</font>
+          </div>
+        </el-col>
+      </el-col>
+    </el-row>
+  </el-row>
 </template>
+
+
+<script>
+export default {
+  name: "OrderManagement",
+  components: {},
+  data() {
+    return {
+      isActive: true
+    };
+  },
+  methods: {
+    SwitchBtn(v) {
+      if (v !== 1) {
+        this.isActive = false;
+      }
+    }
+  }
+};
+</script>
+
+<style>
+.el-row {
+  margin-bottom: 20px;
+}
+.main {
+  border: 1px solid #efeff1;
+}
+.collectData {
+  background-color: #f8f9fd;
+}
+.collectData .el-col-4,
+.el-col-8 {
+  height: 108px;
+  text-align: center;
+}
+.collectData .title {
+  line-height: 28px;
+  margin-top: 30px;
+  color: #96a6b6;
+  font-size: 13px;
+}
+.collectData .nums font {
+  color: #415161;
+  font-size: 22px;
+}
+.collectData .nums span {
+  color: #7b8aa1;
+}
+.collectData .br {
+  border-right: 1px solid #eee;
+}
+/* 左右圆角按钮 */
+.bt-bl {
+  border-radius: 19px 0 0 19px;
+}
+.bt-br {
+  border-radius: 0 19px 19px 0;
+}
+/* 按钮样式 */
+.active {
+  color: #409eff;
+  border-color: #c6e2ff;
+  background-color: #ecf5ff;
+}
+</style>
