@@ -1,13 +1,21 @@
 <template>
   <el-row>
     <el-row>
-      <el-button-group>
-        <el-button class="bt-bl" v-bind:class="{ active: isActive }" @click="SwitchBtn(1)">当日</el-button>
-        <el-button @click="SwitchBtn(2)">昨日</el-button>
-        <el-button @click="SwitchBtn(3)">当月</el-button>
-        <el-button class="bt-br" @click="SwitchBtn(4)">上月</el-button>
-      </el-button-group>
+      <el-radio-group v-model="radio1">
+        <el-radio-button class="bt-bl" label="当日" @click="SwitchBtn(1)"></el-radio-button>
+        <el-radio-button label="昨日" @click="SwitchBtn(2)"></el-radio-button>
+        <el-radio-button label="当月" @click="SwitchBtn(3)"></el-radio-button>
+        <el-radio-button class="bt-br" label="上月" @click="SwitchBtn(4)"></el-radio-button>
+      </el-radio-group>
     </el-row>
+    <!-- <el-row>
+      <el-button-group>
+        <el-button class="bt-bl" v-bind:class="{ active: isActive1 }" @click="SwitchBtn(1)">当日</el-button>
+        <el-button v-bind:class="{ active: isActive2 }" @click="SwitchBtn(2)">昨日</el-button>
+        <el-button v-bind:class="{ active: isActive3 }" @click="SwitchBtn(3)">当月</el-button>
+        <el-button v-bind:class="{ active: isActive4 }" class="bt-br" @click="SwitchBtn(4)">上月</el-button>
+      </el-button-group>
+    </el-row>-->
     <el-row class="main">
       <el-row>
         <el-col :span="24" class="collectData">
@@ -65,15 +73,11 @@ export default {
   },
   data() {
     return {
-      isActive: true
+      radio1: "当日"
     };
   },
   methods: {
-    SwitchBtn(v) {
-      if (v !== 1) {
-        this.isActive = false;
-      }
-    },
+    SwitchBtn(v) {},
     drawLine() {
       // 基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(document.getElementById("myChart"));
@@ -142,5 +146,11 @@ export default {
   color: #409eff;
   border-color: #c6e2ff;
   background-color: #ecf5ff;
+}
+.el-radio-button:nth-child(1) .el-radio-button__inner {
+  border-radius: 19px 0 0 19px;
+}
+.el-radio-button:nth-child(4) .el-radio-button__inner {
+  border-radius: 0 19px 19px 0;
 }
 </style>
