@@ -11,7 +11,7 @@
         active-text-color="#ffd04b"
       >
         <router-link to="/OrderManagement">
-          <el-menu-item index="/homePage">
+          <el-menu-item index="/OrderManagement">
             <i class="el-icon-location"></i>
             <span>订单管理</span>
           </el-menu-item>
@@ -71,7 +71,7 @@
 export default {
   data() {
     return {
-      currentMenu: "/homePage"
+      currentMenu: "/OrderManagement"
     };
   },
   created() {
@@ -89,7 +89,11 @@ export default {
     getUrl() {
       let self = this;
       let currentUrl = window.location.href;
-      self.currentMenu = currentUrl.split("#")[1];
+      if (currentUrl.split("#")[1] == "/index") {
+        self.currentMenu = "/OrderManagement";
+      } else {
+        self.currentMenu = currentUrl.split("#")[1];
+      }
     }
   }
 };

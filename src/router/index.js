@@ -26,8 +26,8 @@ export default new Router({
       name: '主页',
       children: [{
           path: '/',
-          component: ViewShop,
-          name: '查看商品'
+          component: OrderManagement,
+          name: '订单管理'
         },
         {
           path: '/Classification',
@@ -52,7 +52,7 @@ export default new Router({
         {
           path: '/OrderManagement',
           component: OrderManagement,
-          name: '商品管理'
+          name: '订单管理'
         }
       ]
     }

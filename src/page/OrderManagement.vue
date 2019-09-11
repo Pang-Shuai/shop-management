@@ -9,43 +9,48 @@
       </el-button-group>
     </el-row>
     <el-row class="main">
-      <el-col :span="24" class="collectData">
-        <el-col :span="4">
-          <div class="title">订货单</div>
-          <div class="nums">
-            <font>1</font>
-            <span>笔</span>
-          </div>
+      <el-row>
+        <el-col :span="24" class="collectData">
+          <el-col :span="4">
+            <div class="title">订货单</div>
+            <div class="nums">
+              <font>1</font>
+              <span>笔</span>
+            </div>
+          </el-col>
+          <el-col :span="4" class="br">
+            <div class="title">订货单</div>
+            <div class="nums">
+              <font>0</font>
+              <span>笔</span>
+            </div>
+          </el-col>
+          <el-col :span="4">
+            <div class="title">订货金额</div>
+            <div class="nums">
+              <span>￥</span>
+              <font>100.0</font>
+            </div>
+          </el-col>
+          <el-col :span="4" class="br">
+            <div class="title">退货金额</div>
+            <div class="nums">
+              <span>￥</span>
+              <font>0</font>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="title">金额合计</div>
+            <div class="nums">
+              <span>￥</span>
+              <font>100.0</font>
+            </div>
+          </el-col>
         </el-col>
-        <el-col :span="4" class="br">
-          <div class="title">订货单</div>
-          <div class="nums">
-            <font>0</font>
-            <span>笔</span>
-          </div>
-        </el-col>
-        <el-col :span="4">
-          <div class="title">订货金额</div>
-          <div class="nums">
-            <span>￥</span>
-            <font>100.0</font>
-          </div>
-        </el-col>
-        <el-col :span="4" class="br">
-          <div class="title">退货金额</div>
-          <div class="nums">
-            <span>￥</span>
-            <font>0</font>
-          </div>
-        </el-col>
-        <el-col :span="8">
-          <div class="title">金额合计</div>
-          <div class="nums">
-            <span>￥</span>
-            <font>100.0</font>
-          </div>
-        </el-col>
-      </el-col>
+      </el-row>
+      <el-row>
+        <div id="myChart" :style="{width: '100%', height: '300px'}"></div>
+      </el-row>
     </el-row>
   </el-row>
 </template>
@@ -55,6 +60,9 @@
 export default {
   name: "OrderManagement",
   components: {},
+  mounted() {
+    this.drawLine();
+  },
   data() {
     return {
       isActive: true
@@ -65,6 +73,27 @@ export default {
       if (v !== 1) {
         this.isActive = false;
       }
+    },
+    drawLine() {
+      // 基于准备好的dom，初始化echarts实例
+      let myChart = this.$echarts.init(document.getElementById("myChart"));
+      // 绘制图表
+      myChart.setOption({
+        title: { text: "订单柱状图" },
+        tooltip: {},
+        xAxis: {
+          data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+        },
+        yAxis: {},
+        series: [
+          {
+            name: "订单",
+            type: "line",
+            data: [10, 20, 10, 2, 5, 11, 15],
+            smooth: true //折线图为曲线
+          }
+        ]
+      });
     }
   }
 };
