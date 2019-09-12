@@ -1,6 +1,12 @@
 <template>
   <div class="login-box">
-    <el-form :label-position="labelPosition" ref="form" :model="form" label-width="80px">
+    <el-form
+      :label-position="labelPosition"
+      ref="form"
+      :model="form"
+      label-width="80px"
+      class="login-form"
+    >
       <el-form-item label="用户名" placeholder="请输入用户名">
         <el-input v-model="form.name"></el-input>
       </el-form-item>
@@ -35,13 +41,14 @@ export default {
 
 <style>
 .login-box {
-  display: -webkit-box;
   display: flex;
-  min-width: 100vw;
-  min-height: 100vh;
-  -webkit-box-pack: center;
+  width: 100vw;
+  height: 100vh;
   justify-content: center;
-  -webkit-box-align: center;
   align-items: center;
+}
+.login-box .login-form {
+  max-width: 300px;
+  max-height: 300px;
 }
 </style>
