@@ -18,14 +18,15 @@
         <el-button @click="search(searchValue)" type="primary" icon="el-icon-search">搜索</el-button>
       </el-col>
     </el-row>
-    <el-table :data="tableData" border style="width: 100%">
+    <el-table :data="tableData" border height="380px" style="width: 100%">
       <el-table-column prop="name" label="商品名称"></el-table-column>
       <el-table-column prop="price" label="商品价格"></el-table-column>
       <el-table-column prop="type" label="商品分类"></el-table-column>
-      <el-table-column prop="description" label="商品描述" min-width="180"></el-table-column>
+      <el-table-column prop="description" label="商品描述" min-width="100"></el-table-column>
       <el-table-column label="操作">
         <el-row class="center">
           <el-button type="primary" @click="dialogFormVisible = true" icon="el-icon-edit" circle></el-button>
+          <el-button type="success" icon="el-icon-top" circle></el-button>
           <el-button type="danger" @click="delet()" icon="el-icon-delete" circle></el-button>
         </el-row>
       </el-table-column>

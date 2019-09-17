@@ -106,4 +106,12 @@ export default {
   text-decoration: none;
   color: #fff;
 }
+/* 不使用滚动条 */
+/* ::-webkit-scrollbar {
+  width: 0 !important;
+}
+::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0;
+} */
 </style>

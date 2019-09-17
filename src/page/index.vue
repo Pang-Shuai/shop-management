@@ -34,14 +34,6 @@ export default {
   margin: 0;
   padding: 0;
 }
-/* 不使用滚动条 */
-::-webkit-scrollbar {
-  width: 0 !important;
-}
-::-webkit-scrollbar {
-  width: 0 !important;
-  height: 0;
-}
 .el-header,
 .el-footer {
   /* background-color: #b3c0d1; */
@@ -54,11 +46,12 @@ export default {
   display: block;
   position: relative;
   height: 100vh;
-  overflow-y: scroll;
+  overflow-y: hidden;
 }
 
 .el-main {
   height: 100vh;
   color: #333;
+  overflow-y: hidden;
 }
 </style>
