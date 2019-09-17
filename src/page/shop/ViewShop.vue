@@ -8,9 +8,9 @@
         <el-select v-model="searchValue" clearable placeholder="请选择">
           <el-option
             v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            :key="item.id"
+            :label="item.classifyName"
+            :value="item.id"
           ></el-option>
         </el-select>
       </el-col>
@@ -20,7 +20,8 @@
     </el-row>
     <el-table :data="tableData" border style="width: 100%">
       <el-table-column prop="name" label="商品名称"></el-table-column>
-      <el-table-column prop="class" label="商品分类"></el-table-column>
+      <el-table-column prop="price" label="商品价格"></el-table-column>
+      <el-table-column prop="type" label="商品分类"></el-table-column>
       <el-table-column prop="description" label="商品描述" min-width="180"></el-table-column>
       <el-table-column label="操作">
         <el-row class="center">
@@ -56,28 +57,7 @@ export default {
       dialogFormVisible: false,
       formLabelWidth: "120px",
       //搜索数据
-      options: [
-        {
-          value: "选项1",
-          label: "黄金糕"
-        },
-        {
-          value: "选项2",
-          label: "双皮奶"
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎"
-        },
-        {
-          value: "选项4",
-          label: "龙须面"
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭"
-        }
-      ],
+      options: [],
       searchValue: "",
       //初始化表单
       form: {
@@ -91,69 +71,12 @@ export default {
         desc: ""
       },
       // 表单数据
-      tableData: [
-        {
-          name: "2016-05-02",
-          class: "王小虎",
-          description: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          name: "2016-05-04",
-          class: "王小虎",
-          description: "上海市普陀区金沙江路 1517 弄"
-        },
-        {
-          name: "2016-05-01",
-          class: "王小虎",
-          description: "上海市普陀区金沙江路 1519 弄"
-        },
-        {
-          name: "2016-05-03",
-          class: "王小虎",
-          description: "上海市普陀区金沙江路 1516 弄"
-        },
-        {
-          name: "2016-05-02",
-          class: "王小虎",
-          description: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          name: "2016-05-04",
-          class: "王小虎",
-          description: "上海市普陀区金沙江路 1517 弄"
-        },
-        {
-          name: "2016-05-01",
-          class: "王小虎",
-          description: "上海市普陀区金沙江路 1519 弄"
-        },
-        {
-          name: "2016-05-03",
-          class: "王小虎",
-          description: "上海市普陀区金沙江路 1516 弄"
-        },
-        {
-          name: "2016-05-02",
-          class: "王小虎",
-          description: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          name: "2016-05-04",
-          class: "王小虎",
-          description: "上海市普陀区金沙江路 1517 弄"
-        },
-        {
-          name: "2016-05-01",
-          class: "王小虎",
-          description: "上海市普陀区金沙江路 1519 弄"
-        },
-        {
-          name: "2016-05-03",
-          class: "王小虎",
-          description: "上海市普陀区金沙江路 1516 弄"
-        }
-      ]
+      tableData: []
     };
+  },
+  mounted() {
+    this.getShop(); //获取表格信息
+    this.getType(); //获取商品分类
   },
   methods: {
     search(searchValue) {
@@ -187,6 +110,19 @@ export default {
             message: "已取消删除"
           });
         });
+    },
+    //获取商品
+    getShop() {
+      this.$axios.get("/api/goodslist?Sql_falg=select").then(res => {
+        this.tableData = res.data.data;
+      });
+    },
+    // 获取分类
+    getType() {
+      this.$axios.get("/api/goodstype?Sql_flag=select").then(res => {
+        this.options = res.data.data;
+        console.log(res.data.data);
+      });
     }
   }
 };

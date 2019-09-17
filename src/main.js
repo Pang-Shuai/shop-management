@@ -6,6 +6,12 @@ import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import echarts from 'echarts'
+// 引入axios
+import axios from 'axios'
+// import VueAxios from 'vue-axios'
+// Vue.use(VueAxios, axios)
+// import VueResource from 'vue-resource'
+Vue.prototype.$axios = axios
 
 Vue.prototype.$echarts = echarts
 
