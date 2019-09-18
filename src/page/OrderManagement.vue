@@ -1,27 +1,27 @@
 <template>
   <el-row>
     <el-row>
-      <el-radio-group v-model="radio1">
-        <el-radio-button class="bt-bl" label="当日" @click="SwitchBtn(1)"></el-radio-button>
-        <el-radio-button label="昨日" @click="SwitchBtn(2)"></el-radio-button>
-        <el-radio-button label="当月" @click="SwitchBtn(3)"></el-radio-button>
-        <el-radio-button class="bt-br" label="上月" @click="SwitchBtn(4)"></el-radio-button>
+      <el-radio-group v-model="radio1" @change="SwitchBtn(radio1)">
+        <el-radio-button class="bt-bl" label="1">当日</el-radio-button>
+        <el-radio-button label="2">昨日</el-radio-button>
+        <el-radio-button label="3">本月</el-radio-button>
+        <el-radio-button class="bt-br" label="4">上月</el-radio-button>
       </el-radio-group>
     </el-row>
     <el-row class="main">
-      <el-row>
+      <el-row v-loading="isLoading">
         <el-col :span="24" class="collectData">
           <el-col :span="4">
             <div class="title">订货单</div>
             <div class="nums">
-              <font>1</font>
+              <font>{{orderForm}}</font>
               <span>笔</span>
             </div>
           </el-col>
           <el-col :span="4" class="br">
             <div class="title">退货单</div>
             <div class="nums">
-              <font>0</font>
+              <font>{{returnForm}}</font>
               <span>笔</span>
             </div>
           </el-col>
@@ -29,21 +29,21 @@
             <div class="title">订货金额</div>
             <div class="nums">
               <span>￥</span>
-              <font>100.0</font>
+              <font>{{orderAmount}}</font>
             </div>
           </el-col>
           <el-col :span="4" class="br">
             <div class="title">退货金额</div>
             <div class="nums">
               <span>￥</span>
-              <font>0</font>
+              <font>{{returnAmount}}</font>
             </div>
           </el-col>
           <el-col :span="8">
             <div class="title">金额合计</div>
             <div class="nums">
               <span>￥</span>
-              <font>100.0</font>
+              <font>{{TotalAmount}}</font>
             </div>
           </el-col>
         </el-col>
@@ -62,12 +62,13 @@ export default {
   components: {},
   data() {
     return {
-      radio1: "当日",
-      // year: "",
-      // month: "",
-      // lastMonth: "",
-      // today: "",
-      // yesterday: "",
+      isLoading: false,
+      orderForm: 0,
+      returnForm: 0,
+      orderAmount: 0,
+      returnAmount: 0,
+      TotalAmount: 0,
+      radio1: "1",
       dayLike: "",
       lastdayLike: "",
       monthLike: "",
@@ -77,10 +78,31 @@ export default {
   mounted() {
     this.drawLine(); //加载echarts
     this.getDay(); //获取日期
-    this.getOrder(); //获取初始当日订单
+    this.getOrder(this.dayLike, "%"); //获取初始当日订单
   },
   methods: {
-    SwitchBtn(v) {},
+    test() {
+      alert("点击");
+    },
+    SwitchBtn(v) {
+      this.reset();
+      if (v === "1") {
+        if (this.dayLike === "") {
+          return;
+        }
+        this.getOrder(this.dayLike, "%");
+        console.log("当日");
+      } else if (v === "2") {
+        this.getOrder(this.lastdayLike, "%");
+        console.log("昨日");
+      } else if (v === "3") {
+        this.getOrder(this.monthLike, "%%");
+        console.log("当月");
+      } else {
+        this.getOrder(this.lastmonthLike, "%%");
+        console.log("上月");
+      }
+    },
     //echart
     drawLine() {
       // 基于准备好的dom，初始化echarts实例
@@ -107,21 +129,51 @@ export default {
     getDay() {
       const date = new Date();
       const year = date.getFullYear();
-      const month = date.getMonth() + 1;
+      let month = date.getMonth() + 1;
       const lastMonth = date.getMonth();
-      const today = date.getDate();
+      let today = date.getDate();
       const yesterday = date.getDate() - 1;
+      if (today < 10) {
+        today = "0" + today;
+      }
+      if (month < 10) {
+        month = "0" + month;
+      }
       this.dayLike = year + "-" + month + "-" + today;
       this.lastdayLike = year + "-" + month + "-" + yesterday;
       this.monthLike = year + "-" + month;
       this.lastmonthLike = year + "-" + lastMonth;
     },
-    getOrder() {
+    //获取订单
+    getOrder(data, symbol) {
+      this.isLoading = true;
       this.$axios
-        .get("/api/userorder?Sql_flag=count&like=" + this.dayLike + "%")
+        .get("/api/userorder?Sql_flag=count&like=" + data + symbol)
         .then(res => {
-          console.log(res.data);
+          if (res.status === 200) {
+            const order = res.data.data;
+            console.log("获取订单成功", res);
+            this.processingOrder(order);
+          } else {
+            this.$message.error("获取订单失败");
+          }
         });
+    },
+    //处理订单
+    processingOrder(v) {
+      this.orderForm = v.length;
+      v.forEach(item => {
+        this.orderAmount = this.orderAmount + item.Money;
+      });
+      this.isLoading = false;
+    },
+    //初始化金额
+    reset() {
+      this.orderForm = 0;
+      this.returnForm = 0;
+      this.orderAmount = 0;
+      this.returnAmount = 0;
+      this.TotalAmount = 0;
     }
   }
 };

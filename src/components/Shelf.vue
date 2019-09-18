@@ -29,9 +29,19 @@
           </el-form-item>
           <el-form-item label="商品分类" prop="classification">
             <el-select v-model="form.classification" placeholder="请选择商品分类">
-              <el-option label="日用" value="shanghai"></el-option>
-              <el-option label="零食" value="beijing"></el-option>
+              <el-option
+                v-for="item in classificationShop"
+                :key="item.id"
+                :label="item.classifyName"
+                :value="item.id"
+              ></el-option>
             </el-select>
+          </el-form-item>
+          <el-form-item label="是否上架" prop="shelf">
+            <el-radio-group v-model="form.shelf">
+              <el-radio :label="0">上架</el-radio>
+              <el-radio :label="1">下架</el-radio>
+            </el-radio-group>
           </el-form-item>
         </el-form>
       </el-col>
@@ -44,11 +54,13 @@
 export default {
   data() {
     return {
+      classificationShop: [],
       form: {
         name: "",
         price: "",
         description: "",
-        classification: ""
+        classification: "",
+        shelf: 0
       },
       //验证
       rules: {
@@ -62,12 +74,18 @@ export default {
         ],
         classification: [
           { required: true, message: "请选择商品类型", trigger: "change" }
+        ],
+        shelf: [
+          { required: true, message: "请选择是否上架", trigger: "change" }
         ]
       },
       //上传
       dialogImageUrl: "",
       dialogVisible: false
     };
+  },
+  mounted() {
+    this.getType(); //获取商品分类
   },
   methods: {
     //上传方法
@@ -96,6 +114,18 @@ export default {
         }
       });
       return flag;
+    },
+    // 获取分类
+    getType() {
+      this.$axios.get("/api/goodstype?Sql_flag=select").then(res => {
+        console.log("获取分类", res.data.data);
+        if (res.status === 200) {
+          this.classificationShop = res.data.data;
+          console.log("获取分类成功", res.data.data);
+        } else {
+          this.$message.error("获取分类信息失败");
+        }
+      });
     }
   }
 };

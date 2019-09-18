@@ -52,6 +52,6 @@ export default {
 .el-main {
   height: 100vh;
   color: #333;
-  overflow-y: hidden;
+  /* overflow-y: hidden; */
 }
 </style>

@@ -31,8 +31,14 @@ export default {
   },
   methods: {
     submitForm() {
-      debugger;
       let flag = this.$refs["ShelfChild"].validateForm(); //调用子组件的验证表单方法
+      if (flag) {
+        const form = this.$refs["ShelfChild"].form; //子组件的表单数据
+        console.log("校验成功,form表单为", form);
+      } else {
+        this.$refs["ShelfChild"].form;
+        console.log("表单不完整");
+      }
     }
   }
 };

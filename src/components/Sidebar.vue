@@ -26,7 +26,7 @@
               <el-menu-item index="/ViewShop">查看商品</el-menu-item>
             </router-link>
             <router-link to="/ShelfShop">
-              <el-menu-item index="/ShelfShop">上架商品</el-menu-item>
+              <el-menu-item index="/ShelfShop">添加商品</el-menu-item>
             </router-link>
             <router-link to="Classification">
               <el-menu-item index="/Classification">设置分类</el-menu-item>
